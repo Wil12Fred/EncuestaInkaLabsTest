@@ -26,9 +26,10 @@ def reporte_alternativa(encuesta_pregunta, request):
 	total=0
 	alternativas = encuesta_pregunta.pregunta.alternativas.all()
 	for solucion_alternativa in solucion_alternativa_detalles:
-		alternativa = alternativas.filter(pk=solucion_alternativa['alternativa'])[0]
-		alternativaserializer = AlternativaSerializer(alternativa, context={'request': request})
-		alternativa_url = alternativaserializer.data['url']
+		#alternativa = alternativas.filter(pk=solucion_alternativa['alternativa'])[0]
+		#alternativaserializer = AlternativaSerializer(alternativa, context={'request': request})
+		#alternativa_url = alternativaserializer.data['url']
+		alternativa_url = solucion_alternativa['alternativa']
 		reporte[alternativa_url]=solucion_alternativa['dcount']
 		total += reporte[alternativa_url]
 	if(total>0):
