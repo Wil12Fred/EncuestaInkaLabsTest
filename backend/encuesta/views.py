@@ -53,6 +53,8 @@ def reporte_alternativa_orden(encuesta_pregunta, request):
 		reporte[alternativa_url][alternativa_orden.orden]=alternativa_orden.total
 		reporte[alternativa_url]['total'] += alternativa_orden.total
 	for alternativa_orden in alternativas_orden:
+		alternativaserializer = AlternativaSerializer(alternativa_orden.alternativa, context={'request': request})
+		alternativa_url = alternativaserializer.data['url']
 		reporte[alternativa_url][alternativa_orden.orden]=alternativa_orden.total/reporte[alternativa_url]['total']
 	return reporte
 
