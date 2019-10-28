@@ -36,15 +36,13 @@ def reporte_alternativa_orden(encuesta_pregunta):
 	alternativas_orden = Alternativa_orden.objects.filter(pregunta__id=encuesta_pregunta.id)
 	reporte = {}
 	for alternativa_orden in alternativas_orden:
-		print(alternativa_orden.pregunta.pregunta)
-		print(alternativa_orden.pregunta.pregunta.id)
-		if (alternativa_orden.pregunta.pregunta.id in reporte)==False:
-			reporte[alternativa_orden.pregunta.pregunta.id]={}
-			reporte[alternativa_orden.pregunta.pregunta.id]['total']=0
-		reporte[alternativa_orden.pregunta.pregunta.id][alternativa_orden.orden]=alternativa_orden.total
-		reporte[alternativa_orden.pregunta.pregunta.id]['total'] += alternativa_orden.total
+		if (alternativa_orden.alternativa.id in reporte)==False:
+			reporte[alternativa_orden.alternativa.id]={}
+			reporte[alternativa_orden.alternativa.id]['total']=0
+		reporte[alternativa_orden.alternativa.id][alternativa_orden.orden]=alternativa_orden.total
+		reporte[alternativa_orden.alternativa.id]['total'] += alternativa_orden.total
 	for alternativa_orden in alternativas_orden:
-		reporte[alternativa_orden.pregunta.pregunta.id][alternativa_orden.orden]=alternativa_orden.total/reporte[alternativa_orden.pregunta.pregunta.id]['total']
+		reporte[alternativa_orden.alternativa.id][alternativa_orden.orden]=alternativa_orden.total/reporte[alternativa_orden.alternativa.id]['total']
 	return reporte
 
 @api_view(["GET"])
