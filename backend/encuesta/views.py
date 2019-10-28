@@ -35,8 +35,10 @@ def reporte_alternativa(encuesta_pregunta, request):
 			reporte[alternativa_url]=solucion_alternativa['dcount']
 			total += reporte[alternativa_url]
 	if(total>0):
-		for solucion_alternativa in solucion_alternativa_detalles:
-			reporte[alternativa_url]=(solucion_alternativa['dcount'])/total
+		for k,v in reporte.items():
+			reporte[k]=v/total
+		#for solucion_alternativa in solucion_alternativa_detalles:
+		#	reporte[alternativa_url]=(solucion_alternativa['dcount'])/total
 	return reporte
 
 def reporte_alternativa_orden(encuesta_pregunta, request):
