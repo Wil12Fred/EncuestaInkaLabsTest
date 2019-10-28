@@ -52,21 +52,24 @@ def encuesta_detail(request, pk):
 		encuesta=encuestas[0]
 		encuesta_preguntas = EncuestaPregunta.objects.filter(encuesta__id=pk)
 		#preguntas = encuesta.preguntas.all() 
+		encuestaserializer = EncuestaSerializer(encuesta, context={'request': request})
 		reporte = {}
 		for encuesta_pregunta in encuesta_preguntas:
 			pregunta = encuesta_pregunta.pregunta
-			preguntaserializer = PreguntaSerializer(encuesta_pregunta, context={'request': request})
-			reporte[pregunta.id]={}
+			preguntaserializer = PreguntaSerializer(pregunta, context={'request': request})
+			pregunta_url=preguntaserializer.data['url']
+			reporte[pregunta_url]={}
 			if pregunta.tipo==0:
-				reporte[pregunta.id]['textos'] = reporte_texto(encuesta_pregunta)
+				reporte[pregunta_url]['textos'] = reporte_texto(encuesta_pregunta)
 			elif pregunta.tipo==1:
-				reporte[pregunta.id]['alternativas'] = reporte_alternativa(encuesta_pregunta)
+				reporte[pregunta_url]['alternativas'] = reporte_alternativa(encuesta_pregunta)
 			elif pregunta.tipo==2:
-				reporte[pregunta.id]['alternativas_orden'] = reporte_alternativa_orden(encuesta_pregunta)
-		print(reporte)
+				reporte[pregunta_url]['alternativas_orden'] = reporte_alternativa_orden(encuesta_pregunta)
+		reporteencuesta={}
+		reporteencuesta[encuestaserializer.data['url']] = reporte
 		#alternativa_total = len(Solucion_alternativa_detalle.objects.filter(Q(pregunta__id=encuesta_pregunta.pregunta.id) & Q(alternativa__id=alternativa.id)))
-		serializer = EncuestaSerializer(encuesta, context={'request': request})
-		return Response(reporte)
+		#serializer = EncuestaSerializer(encuesta, context={'request': request})
+		return Response(reporteencuesta)
 	else:
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
