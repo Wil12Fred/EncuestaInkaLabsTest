@@ -11,6 +11,10 @@
 
 - Clone the repo
 
+[requires]
+python_version = "3.7"
+pipenv, version 2018.11.26 (pip install pipenv)
+
 #### Backend
 1. cd backend & pipenv shell & pipenv install
 2. python3 manage.py makemigrations custom_user
