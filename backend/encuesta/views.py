@@ -20,29 +20,35 @@ def reporte_texto(encuesta_pregunta):
 		reporte[solucion_texto.texto]=solucion_texto.count
 	return reporte
 
-def reporte_alternativa(encuesta_pregunta):
+def reporte_alternativa(encuesta_pregunta, request):
 	solucion_alternativa_detalles = Solucion_alternativa_detalle.objects.filter(pregunta__id=encuesta_pregunta.id).values('alternativa').annotate(dcount=Count('alternativa'))
 	reporte = {}
 	total=0
+	alternativas = encuesta_pregunta.pregunta.alternativas.all()
 	for solucion_alternativa in solucion_alternativa_detalles:
-		reporte[solucion_alternativa['alternativa']]=solucion_alternativa['dcount']
-		total += reporte[solucion_alternativa['alternativa']]
+		alternativa = alternativas.filter(pk=solucion_alternativa['alternativa'])[0]
+		alternativaserializer = AlternativaSerializer(alternativa, context={'request': request})
+		alternativa_url = alternativaserializer.data['url']
+		reporte[alternativa_url]=solucion_alternativa['dcount']
+		total += reporte[alternativa_url]
 	if(total>0):
 		for solucion_alternativa in solucion_alternativa_detalles:
-			reporte[solucion_alternativa['alternativa']]=(solucion_alternativa['dcount'])/total
+			reporte[alternativa_url]=(solucion_alternativa['dcount'])/total
 	return reporte
 
-def reporte_alternativa_orden(encuesta_pregunta):
+def reporte_alternativa_orden(encuesta_pregunta, request):
 	alternativas_orden = Alternativa_orden.objects.filter(pregunta__id=encuesta_pregunta.id)
 	reporte = {}
 	for alternativa_orden in alternativas_orden:
+		alternativaserializer = AlternativaSerializer(alternativa_orden.alternativa, context={'request': request})
+		alternativa_url = alternativaserializer.data['url']
 		if (alternativa_orden.alternativa.id in reporte)==False:
-			reporte[alternativa_orden.alternativa.id]={}
-			reporte[alternativa_orden.alternativa.id]['total']=0
-		reporte[alternativa_orden.alternativa.id][alternativa_orden.orden]=alternativa_orden.total
-		reporte[alternativa_orden.alternativa.id]['total'] += alternativa_orden.total
+			reporte[alternativa_url]={}
+			reporte[alternativa_url]['total']=0
+		reporte[alternativa_url][alternativa_orden.orden]=alternativa_orden.total
+		reporte[alternativa_url]['total'] += alternativa_orden.total
 	for alternativa_orden in alternativas_orden:
-		reporte[alternativa_orden.alternativa.id][alternativa_orden.orden]=alternativa_orden.total/reporte[alternativa_orden.alternativa.id]['total']
+		reporte[alternativa_url][alternativa_orden.orden]=alternativa_orden.total/reporte[alternativa_url]['total']
 	return reporte
 
 @api_view(["GET"])
@@ -62,9 +68,9 @@ def encuesta_detail(request, pk):
 			if pregunta.tipo==0:
 				reporte[pregunta_url]['textos'] = reporte_texto(encuesta_pregunta)
 			elif pregunta.tipo==1:
-				reporte[pregunta_url]['alternativas'] = reporte_alternativa(encuesta_pregunta)
+				reporte[pregunta_url]['alternativas'] = reporte_alternativa(encuesta_pregunta, request)
 			elif pregunta.tipo==2:
-				reporte[pregunta_url]['alternativas_orden'] = reporte_alternativa_orden(encuesta_pregunta)
+				reporte[pregunta_url]['alternativas_orden'] = reporte_alternativa_orden(encuesta_pregunta, request)
 		reporteencuesta={}
 		reporteencuesta[encuestaserializer.data['url']] = reporte
 		#alternativa_total = len(Solucion_alternativa_detalle.objects.filter(Q(pregunta__id=encuesta_pregunta.pregunta.id) & Q(alternativa__id=alternativa.id)))

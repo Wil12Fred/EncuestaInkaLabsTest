@@ -13,17 +13,17 @@ class PreguntaSerializer(serializers.HyperlinkedModelSerializer):
 		fields = '__all__'
 		#fields = ['url', 'titulo', 'enunciado', 'tipo', 'alternativas']#'__all__'
 
-class AlternativaSerializer(serializers.ModelSerializer):
+class AlternativaSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Alternativa
 		fields = '__all__'
 
-class Pregunta_detalleSerializer(serializers.ModelSerializer):
+class Pregunta_detalleSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Pregunta_detalle
 		fields = '__all__'
 
-class EncuestaPreguntaSerializer(serializers.ModelSerializer):
+class EncuestaPreguntaSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = EncuestaPregunta
 		fields = '__all__'
