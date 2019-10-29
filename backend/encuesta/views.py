@@ -50,14 +50,15 @@ def reporte_alternativa_orden(encuesta_pregunta, request):
 		alternativa_url = alternativaserializer.data['url']
 		if (alternativa_url in reporte)==False:
 			reporte[alternativa_url]={}
+			reporte[alternativa_url]['orden']={}
 			reporte[alternativa_url]['total']=0
-		reporte[alternativa_url][alternativa_orden.orden]=alternativa_orden.total
+		reporte[alternativa_url]['orden'][alternativa_orden.orden]=alternativa_orden.total
 		reporte[alternativa_url]['total'] += alternativa_orden.total
 	for k1,v1 in reporte.items():
 		total = v1['total']
-		for k2,v2 in v1.items():
+		for k2,v2 in v1['orden'].items():
 			if(k2!='total'):
-				reporte[k1][k2]=v2/total
+				reporte[k1]['orden'][k2]=v2/total
 	return reporte
 
 @api_view(["GET"])
