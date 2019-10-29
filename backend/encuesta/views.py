@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from encuesta.models import Alternativa, Pregunta, Encuesta, Pregunta_detalle, EncuestaPregunta, Solucion_texto_detalle, Solucion_texto, Solucion_alternativa_detalle, Alternativa_orden, Solucion_alternativa_orden_detalle, Encuesta_alternativa_orden
 from encuesta.serializers import EncuestaSerializer, PreguntaSerializer, AlternativaSerializer, Pregunta_detalleSerializer, EncuestaPreguntaSerializer, Solucion_texto_detalleSerializer, Solucion_textoSerializer, Solucion_alternativa_detalleSerializer, Alternativa_ordenSerializer, Solucion_alternativa_orden_detalleSerializer, Encuesta_alternativa_ordenSerializer
 
-def reporte_texto(encuesta_pregunta):
+def reporte_texto(encuesta_pregunta, request):
 	solucion_textos = Solucion_texto.objects.filter(pregunta__id=encuesta_pregunta.id).order_by('-count')[:50]
 	reporte = {}
 	for solucion_texto in solucion_textos:
@@ -66,24 +66,23 @@ def encuesta_detail(request, pk):
 	if(len(encuestas)!=0):
 		encuesta=encuestas[0]
 		encuesta_preguntas = EncuestaPregunta.objects.filter(encuesta__id=pk)
-		#preguntas = encuesta.preguntas.all() 
 		encuestaserializer = EncuestaSerializer(encuesta, context={'request': request})
 		reporte = {}
 		for encuesta_pregunta in encuesta_preguntas:
 			pregunta = encuesta_pregunta.pregunta
+			encuesta_preguntaserializer = EncuestaPreguntaSerializer(encuesta_pregunta, context={'request': request})
 			preguntaserializer = PreguntaSerializer(pregunta, context={'request': request})
-			pregunta_url=preguntaserializer.data['url']
-			reporte[pregunta_url]={}
+			encuesta_pregunta_url=encuesta_preguntaserializer.data['url']
+			reporte[encuesta_pregunta_url]={}
+			reporte[encuesta_pregunta_url]["problema"]=preguntaserializer.data['url']
 			if pregunta.tipo==0:
-				reporte[pregunta_url]['textos'] = reporte_texto(encuesta_pregunta)
+				reporte[encuesta_pregunta_url]['textos'] = reporte_texto(encuesta_pregunta, request)
 			elif pregunta.tipo==1:
-				reporte[pregunta_url]['alternativas'] = reporte_alternativa(encuesta_pregunta, request)
+				reporte[encuesta_pregunta_url]['alternativas'] = reporte_alternativa(encuesta_pregunta, request)
 			elif pregunta.tipo==2:
-				reporte[pregunta_url]['alternativas_orden'] = reporte_alternativa_orden(encuesta_pregunta, request)
+				reporte[encuesta_pregunta_url]['alternativas_orden'] = reporte_alternativa_orden(encuesta_pregunta, request)
 		reporteencuesta={}
 		reporteencuesta[encuestaserializer.data['url']] = reporte
-		#alternativa_total = len(Solucion_alternativa_detalle.objects.filter(Q(pregunta__id=encuesta_pregunta.pregunta.id) & Q(alternativa__id=alternativa.id)))
-		#serializer = EncuestaSerializer(encuesta, context={'request': request})
 		return Response(reporteencuesta)
 	else:
 		return Response(status=status.HTTP_400_BAD_REQUEST)
