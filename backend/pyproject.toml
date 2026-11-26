@@ -1,0 +1,28 @@
+[project]
+name = "encuesta-backend"
+version = "0.1.0"
+description = "Django REST API (JWT auth via djoser + survey CRUD and reports)"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    # Django 2.2 is the newest release djoser 1.x (and its URL layout, which
+    # the frontend calls) still runs on.
+    "Django>=2.2.28,<2.3",
+    "djangorestframework>=3.9.4,<3.10",
+    "djangorestframework-jwt==1.11.0",
+    "PyJWT>=1.7,<2",
+    "djoser==1.1.5",
+    "django-templated-mail==1.1.1",
+    "django-rest-swagger==2.2.0",
+    "coreapi==2.3.3",
+    "django-cors-headers>=3.0,<3.1",
+    "django-debug-toolbar>=1.11,<2",
+    "pytz",
+    # Django 2.2 imports distutils, which Python 3.12 dropped; setuptools ships a shim.
+    "setuptools<81",
+]
+
+[project.optional-dependencies]
+postgres = ["psycopg2-binary>=2.8,<2.10"]
+
+[tool.uv]
+package = false
