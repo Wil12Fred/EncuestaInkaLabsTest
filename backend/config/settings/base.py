@@ -3,7 +3,8 @@ import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-SECRET_KEY = '$5pan&)k_caa*a=y_i&4zoz)9gzyl4h=-9g%3mc+g6-au*g&ak'
+# Read from the environment; the fallback is for local development only.
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-only-insecure-secret-key')
 
 INSTALLED_APPS = [
     # Personal,
