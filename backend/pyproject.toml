@@ -18,7 +18,7 @@ dependencies = [
     "django-debug-toolbar>=1.11,<2",
     "pytz",
     # Django 2.2 imports distutils, which Python 3.12 dropped; setuptools ships a shim.
-    "setuptools<81",
+    "setuptools<85",
 ]
 
 [project.optional-dependencies]
