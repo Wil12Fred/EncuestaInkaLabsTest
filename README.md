@@ -1,7 +1,7 @@
-# Survey REST API
+# Encuesta — survey REST API
 
 A Django REST Framework API for building surveys and reporting on their
-answers, written in 2019 as a take-home test. It reuses the
+answers, written in 2019 as a take-home exercise. It reuses the
 backend skeleton of [Django-React](../Django-React) (custom user, djoser
 registration, JWT login); there is no frontend.
 
