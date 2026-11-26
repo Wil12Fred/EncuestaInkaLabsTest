@@ -13,8 +13,6 @@ urlpatterns = [
     url(r'^auth/', include('djoser.urls')),
     url(r'^auth/', include('djoser.urls.jwt')),
     url('', include('custom_user.urls')),
-    #url('', include ('library.urls')),
-    #url('', include ('pago.urls')),
     url('', include ('encuesta.urls')),
 ]
 

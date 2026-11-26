@@ -9,8 +9,6 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-only-insecure-secret-key')
 INSTALLED_APPS = [
     # Personal,
     'custom_user',
-    'library',
-    #'pago',
     'encuesta',
 
     #BASE
