@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Q 
 from django.db.models import Count
-from django.core.urlresolvers import resolve
+from django.urls import resolve
 
 # Create your views here.
 

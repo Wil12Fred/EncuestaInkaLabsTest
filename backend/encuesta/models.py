@@ -37,8 +37,8 @@ class Encuesta(models.Model):
 
 #Model 3 lvl-2
 class Pregunta_detalle(models.Model):
-	pregunta = models.ForeignKey(Pregunta)
-	alternativa = models.ForeignKey(Alternativa)
+	pregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
+	alternativa = models.ForeignKey(Alternativa, on_delete=models.CASCADE)
 	def __str__(self):
 		return "/api/pregunta_detalle="+str(self.id)+"/detail"
 	class Meta:
@@ -46,8 +46,8 @@ class Pregunta_detalle(models.Model):
 
 #Model 4 lvl-2
 class EncuestaPregunta(models.Model):
-	encuesta = models.ForeignKey(Encuesta)
-	pregunta = models.ForeignKey(Pregunta)
+	encuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
+	pregunta = models.ForeignKey(Pregunta, on_delete=models.CASCADE)
 	def __str__(self):
 		return "/api/encuesta_pregunta="+str(self.id)+"/detail"
 	class Meta:
@@ -55,27 +55,27 @@ class EncuestaPregunta(models.Model):
 
 #Model 6
 class Solucion_texto_detalle(models.Model):
-	pregunta = models.ForeignKey(EncuestaPregunta)
+	pregunta = models.ForeignKey(EncuestaPregunta, on_delete=models.CASCADE)
 	texto = models.CharField(max_length=50)
 
 #Model 6
 class Solucion_texto(models.Model):
-	pregunta = models.ForeignKey(EncuestaPregunta)
+	pregunta = models.ForeignKey(EncuestaPregunta, on_delete=models.CASCADE)
 	texto = models.CharField(max_length=30)
 	count = models.IntegerField(default=1)
 	#objects = Solucion_textoManager()
 
 #Model 7
 class Solucion_alternativa_detalle(models.Model):
-	pregunta = models.ForeignKey(EncuestaPregunta)
-	alternativa = models.ForeignKey(Alternativa)
+	pregunta = models.ForeignKey(EncuestaPregunta, on_delete=models.CASCADE)
+	alternativa = models.ForeignKey(Alternativa, on_delete=models.CASCADE)
 	def __str__(self):
 		return "/api/solucion_alternativa_detalle="+str(self.id)+"/detail"
 
 #Model 3 lvl-2
 class Alternativa_orden(models.Model):
-	pregunta = models.ForeignKey(EncuestaPregunta)
-	alternativa = models.ForeignKey(Alternativa)
+	pregunta = models.ForeignKey(EncuestaPregunta, on_delete=models.CASCADE)
+	alternativa = models.ForeignKey(Alternativa, on_delete=models.CASCADE)
 	orden = models.IntegerField()
 	total = models.IntegerField()
 	def __str__(self):
@@ -91,7 +91,7 @@ class Solucion_alternativa_orden_detalle(models.Model):
 
 #Model 3 lvl-2
 class Encuesta_alternativa_orden(models.Model):
-	Solucion_alternativa_orden_detalle = models.ForeignKey(Solucion_alternativa_orden_detalle)
-	alternativa = models.ForeignKey(Alternativa_orden)
+	Solucion_alternativa_orden_detalle = models.ForeignKey(Solucion_alternativa_orden_detalle, on_delete=models.CASCADE)
+	alternativa = models.ForeignKey(Alternativa_orden, on_delete=models.CASCADE)
 	def __str__(self):
 		return "/api/encuesta_alternativa_orden="+str(self.id)+"/detail"
