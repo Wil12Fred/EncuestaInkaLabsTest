@@ -1,4 +1,6 @@
-# Encuesta — survey REST API
+# django-survey-app
+
+> Encuesta — survey REST API
 
 A Django REST Framework API for building surveys and reporting on their
 answers, written in 2019 as a take-home exercise. It reuses the
