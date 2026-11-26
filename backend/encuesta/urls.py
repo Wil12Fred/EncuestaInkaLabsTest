@@ -11,7 +11,7 @@ urlpatterns = [
 	url('api/pregunta/$', views.PreguntaListCreate.as_view() , name='pregunta-list'),
 	url('api/pregunta=(?P<pk>\d+)/detail$', views.PreguntaDetailView.as_view() , name='pregunta-detail'),
 	url('api/alternativa/$', views.AlternativaListCreate.as_view(), name ='alternativa-list' ),
-	url('api/alternativa=(?P<pk>\d+)/detail$', views.AlternativaListCreate.as_view(), name ='alternativa-detail' ),
+	url('api/alternativa=(?P<pk>\d+)/detail$', views.AlternativaDetailView.as_view(), name ='alternativa-detail' ),
 	url('api/pregunta_detalle/$', views.Pregunta_detalleListCreate.as_view() , name='pregunta_detalle-list'),
 	url('api/pregunta_detalle=(?P<pk>\d+)/detail/$', views.Pregunta_detalleDetailView.as_view() , name='pregunta_detalle-detail'),
 	url('api/pregunta_detalle=(?P<pk>\d+)/update/$', views.Pregunta_detalleDetailView.as_view() , name='pregunta_detalle-update'),
